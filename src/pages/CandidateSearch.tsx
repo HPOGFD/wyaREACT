@@ -14,6 +14,7 @@ const CandidateSearch = () => {
     const fetchUsers = async () => {
       const userData = await searchGithub();
       setUsers(userData);
+      console.log(userData); // Check the data returned from the API
     };
 
     fetchUsers();
