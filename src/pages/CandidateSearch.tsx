@@ -24,7 +24,7 @@ const CandidateSearch = () => {
     if (username.trim()) {
       setError('');
       const userData = await searchGithubUser(username);
-      
+      console.log(userData);
       // Check if the fetched user has data
       if (userData?.login) {
         setUser({
