@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { FaCheck } from 'react-icons/fa'; // Importing the save and check icons from react-icons
+import { TbXboxXFilled } from 'react-icons/tb'; // Importing the Xbox X icon from react-icons
 import { searchGithub, searchGithubUser } from '../api/API';
 import { CandidateDetails } from '../interfaces/Candidate.interface'; // Assuming this file is in a folder called 'interfaces'
 
@@ -82,7 +84,42 @@ const CandidateSearch = () => {
           <p><strong>Location:</strong> {user.location}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Company:</strong> {user.company}</p>
-          <button onClick={() => handleSaveCandidate(user)}>Save</button>
+          
+          {/* New round button with green and red style */}
+          <button
+                onClick={() => handleSaveCandidate(user)}
+                style={{
+                  backgroundColor: 'red', // green background
+                  color: 'white', // white text color
+                  border: 'none', // no border
+                  borderRadius: '50%', // round shape
+                  padding: '10px 20px', // padding to make it rounder
+                  cursor: 'pointer', // cursor pointer on hover
+                  display: 'flex', // center the icon
+                  alignItems: 'center', // vertical align
+                  justifyContent: 'center', // horizontal align
+                  marginTop: '10px' // some spacing
+                }}
+              >
+                <TbXboxXFilled size={24} />
+              </button>
+          <button
+            onClick={() => handleSaveCandidate(user)}
+            style={{
+              backgroundColor: 'green', // green background
+              color: 'white', // white text color
+              border: 'none', // no border
+              borderRadius: '50%', // round shape
+              padding: '10px 20px', // padding to make it rounder
+              cursor: 'pointer', // cursor pointer on hover
+              display: 'flex', // center the icon
+              alignItems: 'center', // vertical align
+              justifyContent: 'center', // horizontal align
+              marginTop: '10px' // some spacing
+            }}
+          >
+            <FaCheck size={24} />
+          </button>
         </div>
       )}
 
@@ -94,7 +131,25 @@ const CandidateSearch = () => {
             <li key={user.login}>
               <h3>{user.login}</h3>
               <img src={user.avatar_url} alt={user.login} width={50} height={50} />
-              <button onClick={() => handleSaveCandidate(user)}>Save</button>
+              
+              {/* New round button with green and red style for saved candidates */}
+              <button
+                onClick={() => handleSaveCandidate(user)}
+                style={{
+                  backgroundColor: 'green', // green background
+                  color: 'white', // white text color
+                  border: 'none', // no border
+                  borderRadius: '50%', // round shape
+                  padding: '10px 20px', // padding to make it rounder
+                  cursor: 'pointer', // cursor pointer on hover
+                  display: 'flex', // center the icon
+                  alignItems: 'center', // vertical align
+                  justifyContent: 'center', // horizontal align
+                  marginTop: '10px' // some spacing
+                }}
+              >
+                <FaCheck size={24} />
+              </button>
             </li>
           ))}
         </ul>
