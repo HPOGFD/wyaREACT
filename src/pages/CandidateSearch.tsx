@@ -4,6 +4,9 @@ import { TbXboxXFilled } from 'react-icons/tb'; // Importing the Xbox X icon fro
 import { searchGithub, searchGithubUser } from '../api/API';
 import { CandidateDetails } from '../interfaces/Candidate.interface'; // Assuming this file is in a folder called 'interfaces'
 
+import '../styles/search.css';
+
+
 const CandidateSearch = () => {
   // State to store the list of users and a single user searched
   const [users, setUsers] = useState<CandidateDetails[]>([]);
@@ -61,66 +64,68 @@ const CandidateSearch = () => {
 
   return (
     <div>
-      <h1>Candidate Search</h1>
-
-      {/* Search input */}
-      <input
-        type="text"
-        placeholder="Search GitHub user by username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
-
-      {error && <p>{error}</p>}
+      <div className="search-container">
+        <h1>Candidate Search</h1>
+        <input
+          type="text"
+          placeholder="Search GitHub user by username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+        {error && <p>{error}</p>}
+      </div>
+      
 
       {/* Display searched user details */}
       {user && (
-        <div>
-          <h3>{user.login}</h3>
-          <img src={user.avatar_url} alt={user.login} width={100} height={100} />
-          <p>{user.bio}</p>
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Location:</strong> {user.location}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Company:</strong> {user.company}</p>
-          
-          {/* New round button with green and red style */}
-          <button
-                onClick={() => handleSaveCandidate(user)}
-                style={{
-                  backgroundColor: 'red', // green background
-                  color: 'white', // white text color
-                  border: 'none', // no border
-                  borderRadius: '50%', // round shape
-                  padding: '10px 20px', // padding to make it rounder
-                  cursor: 'pointer', // cursor pointer on hover
-                  display: 'flex', // center the icon
-                  alignItems: 'center', // vertical align
-                  justifyContent: 'center', // horizontal align
-                  marginTop: '10px' // some spacing
-                }}
-              >
-                <TbXboxXFilled size={24} />
-              </button>
+        <div className="container">
+        <img src={user.avatar_url} alt={user.login} width={100} height={100} />
+        <h3>{user.login}</h3>
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Location:</strong> {user.location}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Company:</strong> {user.company}</p>
+        <p>{user.bio}</p>
+      
+        {/* Buttons */}
+        <div className="button-group">
           <button
             onClick={() => handleSaveCandidate(user)}
             style={{
-              backgroundColor: 'green', // green background
-              color: 'white', // white text color
-              border: 'none', // no border
-              borderRadius: '50%', // round shape
-              padding: '10px 20px', // padding to make it rounder
-              cursor: 'pointer', // cursor pointer on hover
-              display: 'flex', // center the icon
-              alignItems: 'center', // vertical align
-              justifyContent: 'center', // horizontal align
-              marginTop: '10px' // some spacing
+              backgroundColor: 'red',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              padding: '10px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <TbXboxXFilled size={24} />
+          </button>
+          <button
+            onClick={() => handleSaveCandidate(user)}
+            style={{
+              backgroundColor: 'green',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50%',
+              padding: '10px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: '10px', // Add spacing between the buttons
             }}
           >
             <FaCheck size={24} />
           </button>
         </div>
+      </div>
+      
       )}
 
       {/* Display list of users */}
