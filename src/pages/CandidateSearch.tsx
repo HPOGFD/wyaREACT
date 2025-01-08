@@ -8,6 +8,7 @@ const CandidateSearch = () => {
   const [username, setUsername] = useState<string>('');
   const [user, setUser] = useState<CandidateDetails | null>(null);
   const [error, setError] = useState<string>('');
+  const [savedCandidates, setSavedCandidates] = useState<CandidateDetails[]>([]);
 
   // Fetch a list of users when the component mounts
   useEffect(() => {
@@ -16,6 +17,10 @@ const CandidateSearch = () => {
       setUsers(userData);
       console.log(userData); // Check the data returned from the API
     };
+
+    // Retrieve saved candidates from localStorage when the page loads
+    const storedSavedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
+    setSavedCandidates(storedSavedCandidates);
 
     fetchUsers();
   }, []);
@@ -43,6 +48,15 @@ const CandidateSearch = () => {
     }
   };
 
+  // Save the current user to the saved candidates list
+  const handleSaveCandidate = (candidate: CandidateDetails) => {
+    const updatedSavedCandidates = [...savedCandidates, candidate];
+    setSavedCandidates(updatedSavedCandidates);
+    
+    // Store saved candidates in localStorage
+    localStorage.setItem('savedCandidates', JSON.stringify(updatedSavedCandidates));
+  };
+
   return (
     <div>
       <h1>Candidate Search</h1>
@@ -68,6 +82,7 @@ const CandidateSearch = () => {
           <p><strong>Location:</strong> {user.location}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Company:</strong> {user.company}</p>
+          <button onClick={() => handleSaveCandidate(user)}>Save</button>
         </div>
       )}
 
@@ -79,6 +94,7 @@ const CandidateSearch = () => {
             <li key={user.login}>
               <h3>{user.login}</h3>
               <img src={user.avatar_url} alt={user.login} width={50} height={50} />
+              <button onClick={() => handleSaveCandidate(user)}>Save</button>
             </li>
           ))}
         </ul>
