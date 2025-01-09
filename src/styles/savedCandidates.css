@@ -1,0 +1,53 @@
+/* General container styling */
+.saved-candidates {
+    max-width: 800px; /* Limit container width */
+    margin: 0 auto; /* Center container horizontally */
+    padding: 20px; /* Add padding inside container */
+    font-family: Arial, sans-serif; /* Set font style */
+}
+
+/* Table styles */
+.candidate-table {
+    width: 100%; /* Make the table full width */
+    border-collapse: collapse; /* Collapse table borders */
+    margin-top: 20px; /* Add space above the table */
+}
+
+/* Table header and data cell styles */
+.candidate-table th,
+.candidate-table td {
+    padding: 10px; /* Add padding inside cells */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Add a subtle bottom border */
+}
+
+/* Avatar styling */
+.avatar {
+    width: 50px; /* Set avatar width */
+    height: 50px; /* Set avatar height */
+    border-radius: 50%; /* Make the avatar circular */
+}
+
+/* Button styling */
+.reject-button {
+    color: white; /* Set text color to white */
+    background-color: #ff4d4d; /* Set background color to red */
+    border: none; /* Remove border */
+    padding: 8px 12px; /* Add padding inside the button */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+    border-radius: 5px; /* Round button corners */
+    font-size: 14px; /* Set font size */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Hover effect for the reject button */
+.reject-button:hover {
+    background-color: #d40000; /* Darken red on hover */
+}
+
+/* Message styling when no saved candidates */
+.saved-candidates p {
+    font-size: 16px; /* Set font size */
+    text-align: center; /* Center the message */
+    color: #555; /* Set a medium gray text color */
+}

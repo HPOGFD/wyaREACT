@@ -1,131 +1,106 @@
 import { useState, useEffect } from 'react';
-import { FaCheck } from 'react-icons/fa'; // Importing the save and check icons from react-icons
-import { TbXboxXFilled } from 'react-icons/tb'; // Importing the Xbox X icon from react-icons
-import { searchGithub, searchGithubUser } from '../api/API';
-import { CandidateDetails } from '../interfaces/Candidate.interface'; // Assuming this file is in a folder called 'interfaces'
-
-import '../styles/search.css';
-
+import { FaCheck } from 'react-icons/fa'; // Import the "check" icon for saved candidates
+import { TbXboxXFilled } from 'react-icons/tb'; // Import the "X" icon for rejecting candidates
+import { searchGithub, searchGithubUser } from '../api/API'; // Import API functions for fetching GitHub data
+import { CandidateDetails } from '../interfaces/Candidate.interface'; // Import the CandidateDetails interface
+import '../styles/search.css'; // Import custom CSS for styling the component
+import '../styles/red.css'; // Red button styles
+import '../styles/green.css'; // Green button styles
 
 const CandidateSearch = () => {
-  // State to store the list of users and a single user searched
-  const [users, setUsers] = useState<CandidateDetails[]>([]);
-  const [username, setUsername] = useState<string>('');
-  const [user, setUser] = useState<CandidateDetails | null>(null);
-  const [error, setError] = useState<string>('');
-  const [savedCandidates, setSavedCandidates] = useState<CandidateDetails[]>([]);
+  // State variables to manage application data
+  const [users, setUsers] = useState<CandidateDetails[]>([]); // List of users fetched from the GitHub API
+  const [username, setUsername] = useState<string>(''); // Username input for searching a specific user
+  const [user, setUser] = useState<CandidateDetails | null>(null); // Data for a single searched user
+  const [error, setError] = useState<string>(''); // Error message if user not found
+  const [savedCandidates, setSavedCandidates] = useState<CandidateDetails[]>([]); // List of saved candidates
 
-  // Fetch a list of users when the component mounts
+  // useEffect hook runs when the component mounts
   useEffect(() => {
     const fetchUsers = async () => {
-      const userData = await searchGithub();
-      setUsers(userData);
-      console.log(userData); // Check the data returned from the API
+      const userData = await searchGithub(); // Fetch a list of users using the API
+      setUsers(userData); // Update state with the fetched users
+      console.log(userData); // Debug: Log the fetched user data
     };
 
-    // Retrieve saved candidates from localStorage when the page loads
-    const storedSavedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
-    setSavedCandidates(storedSavedCandidates);
+    // Retrieve saved candidates from localStorage
+    const storedSavedCandidates = JSON.parse(
+      localStorage.getItem('savedCandidates') || '[]' // Parse stored data or set to an empty array
+    );
+    setSavedCandidates(storedSavedCandidates); // Initialize state with saved candidates
 
-    fetchUsers();
+    fetchUsers(); // Call the function to fetch users
   }, []);
 
-  // Handle search for a specific user by username
+  // Handle searching for a specific user by username
   const handleSearch = async () => {
     if (username.trim()) {
-      setError('');
-      const userData = await searchGithubUser(username);
-      console.log(userData);
-      // Check if the fetched user has data
+      setError(''); // Clear any previous errors
+      const userData = await searchGithubUser(username); // Fetch data for the entered username
+      console.log(userData); // Debug: Log the fetched user data
       if (userData?.login) {
+        // Check if the user exists
         setUser({
           avatar_url: userData.avatar_url,
           login: userData.login,
-          name: userData.name || '',
-          location: userData.location || '',
-          email: userData.email || '',
-          company: userData.company || '',
-          bio: userData.bio || ''
+          name: userData.name || '', // Default to empty string if no name
+          location: userData.location || '', // Default location
+          email: userData.email || '', // Default email
+          company: userData.company || '', // Default company
+          bio: userData.bio || '', // Default bio
         });
       } else {
-        setError('User not found');
+        setError('User not found'); // Set error if no user is returned
       }
     }
   };
 
-  // Save the current user to the saved candidates list
+  // Save a user to the saved candidates list
   const handleSaveCandidate = (candidate: CandidateDetails) => {
-    const updatedSavedCandidates = [...savedCandidates, candidate];
-    setSavedCandidates(updatedSavedCandidates);
-    
-    // Store saved candidates in localStorage
-    localStorage.setItem('savedCandidates', JSON.stringify(updatedSavedCandidates));
+    const updatedSavedCandidates = [...savedCandidates, candidate]; // Add the user to the saved candidates array
+    setSavedCandidates(updatedSavedCandidates); // Update state
+    localStorage.setItem('savedCandidates', JSON.stringify(updatedSavedCandidates)); // Persist data to localStorage
   };
 
   return (
     <div>
+      {/* Search Section */}
       <div className="search-container">
         <h1>Candidate Search</h1>
         <input
           type="text"
           placeholder="Search GitHub user by username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={username} // Bind input value to state
+          onChange={(e) => setUsername(e.target.value)} // Update state on input change
         />
         <button onClick={handleSearch}>Search</button>
-        {error && <p>{error}</p>}
+        {error && <p>{error}</p>} {/* Show error message if present */}
       </div>
-      
 
       {/* Display searched user details */}
       {user && (
         <div className="container">
-        <img src={user.avatar_url} alt={user.login} width={100} height={100} />
-        <h3>{user.login}</h3>
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Location:</strong> {user.location}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Company:</strong> {user.company}</p>
-        <p>{user.bio}</p>
-      
-        {/* Buttons */}
-        <div className="button-group">
-          <button
-            onClick={() => handleSaveCandidate(user)}
-            style={{
-              backgroundColor: 'red',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              padding: '10px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <TbXboxXFilled size={24} />
-          </button>
-          <button
-            onClick={() => handleSaveCandidate(user)}
-            style={{
-              backgroundColor: 'green',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              padding: '10px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: '10px', // Add spacing between the buttons
-            }}
-          >
-            <FaCheck size={24} />
-          </button>
+          <img src={user.avatar_url} alt={user.login} width={100} height={100} /> {/* User avatar */}
+          <h3>{user.login}</h3> {/* Username */}
+          <p><strong>Name:</strong> {user.name}</p>
+          <p><strong>Location:</strong> {user.location}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Company:</strong> {user.company}</p>
+          <p>{user.bio}</p>
+
+          {/* Buttons for saving/rejecting the candidate */}
+          <div className="button-group">
+            {/* Reject button */}
+            <button className="red" onClick={() => handleSaveCandidate(user)}>
+              <TbXboxXFilled size={24} />
+            </button>
+
+            {/* Save button */}
+            <button className="green" onClick={() => handleSaveCandidate(user)}>
+              <FaCheck size={24} />
+            </button>
+          </div>
         </div>
-      </div>
-      
       )}
 
       {/* Display list of users */}
@@ -134,25 +109,10 @@ const CandidateSearch = () => {
         <ul>
           {users.map((user) => (
             <li key={user.login}>
-              <h3>{user.login}</h3>
-              <img src={user.avatar_url} alt={user.login} width={50} height={50} />
-              
-              {/* New round button with green and red style for saved candidates */}
-              <button
-                onClick={() => handleSaveCandidate(user)}
-                style={{
-                  backgroundColor: 'green', // green background
-                  color: 'white', // white text color
-                  border: 'none', // no border
-                  borderRadius: '50%', // round shape
-                  padding: '10px 20px', // padding to make it rounder
-                  cursor: 'pointer', // cursor pointer on hover
-                  display: 'flex', // center the icon
-                  alignItems: 'center', // vertical align
-                  justifyContent: 'center', // horizontal align
-                  marginTop: '10px' // some spacing
-                }}
-              >
+              <h3>{user.login}</h3> {/* Username */}
+              <img src={user.avatar_url} alt={user.login} width={50} height={50} /> {/* Avatar */}
+              {/* Save button */}
+              <button className="green" onClick={() => handleSaveCandidate(user)}>
                 <FaCheck size={24} />
               </button>
             </li>

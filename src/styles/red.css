@@ -1,0 +1,11 @@
+.red {
+    background-color: red; /* Set the background color to red */
+    color: white; /* Set the text color to white */
+    border: none; /* Remove the border */
+    border-radius: 50%; /* Make the button circular */
+    padding: 10px; /* Add padding inside the button */
+    cursor: pointer; /* Change cursor to a pointer when hovered over */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically align content inside the button */
+    justify-content: center; /* Horizontally align content inside the button */
+}
