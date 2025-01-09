@@ -60,6 +60,9 @@ npm start
 
 [LINK TO RENDER PAGE](https://wyareact.onrender.com/)
 
+<img width="589" alt="image" src="https://github.com/user-attachments/assets/452914a6-ad95-4f78-89cc-649f03ad8e5f" />
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/60fcc722-daa8-4e46-bb2b-05c6887e1944" />
+
 
 ## Contributing
 
