@@ -62,6 +62,18 @@ const CandidateSearch = () => {
     localStorage.setItem('savedCandidates', JSON.stringify(updatedSavedCandidates)); // Persist data to localStorage
   };
 
+   // Function to handle rejection of a candidate
+   const handleRejectCandidate = (candidate: CandidateDetails) => {
+    // Filter out the rejected candidate based on their login ID
+    const updatedCandidates = savedCandidates.filter(
+      (savedCandidate) => savedCandidate.login !== candidate.login
+    );
+    setSavedCandidates(updatedCandidates); // Update the state with the new list of candidates
+
+    // Update localStorage to reflect the new list of saved candidates
+    localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
+  };
+
   return (
     <div>
       {/* Search Section */}
@@ -91,7 +103,7 @@ const CandidateSearch = () => {
           {/* Buttons for saving/rejecting the candidate */}
           <div className="button-group">
             {/* Reject button */}
-            <button className="red" onClick={() => handleSaveCandidate(user)}>
+            <button className="red" onClick={() => handleRejectCandidate(user)}>
               <TbXboxXFilled size={24} />
             </button>
 
